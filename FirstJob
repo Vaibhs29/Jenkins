@@ -1,0 +1,5 @@
+public class JenkinsJob {
+    public static void main(String[] args) {
+        System.out.println("This is my first Jenkins Job");
+    }
+}
