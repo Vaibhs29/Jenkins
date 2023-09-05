@@ -2,10 +2,11 @@ resource "aws_vpc" "MyVpc" {
     cidr_block = "15.15.0.0/16"
    
     tags = {
-        Name = "MyVpc"
+        Name = "MyVpc_by_Jenkins"
       
     }
   }
+  
   resource "aws_subnet" "Subnet-1" {
     vpc_id = aws_vpc.MyVpc.id
     cidr_block = "15.15.1.0/24"
@@ -17,6 +18,8 @@ resource "aws_vpc" "MyVpc" {
     }
     
   }
+  
+# Configure the AWS Gateway
   resource "aws_internet_gateway" "My_IGW" {
     vpc_id = aws_vpc.MyVpc.id
 
@@ -25,6 +28,7 @@ resource "aws_vpc" "MyVpc" {
       
     }
   }
+  
   resource "aws_route" "MRT" {
     route_table_id = aws_vpc.MyVpc.main_route_table_id
     destination_cidr_block = "0.0.0.0/0"
@@ -33,28 +37,13 @@ resource "aws_vpc" "MyVpc" {
   
   }
 
-
-resource "aws_instance" "ubuntu" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
-   subnet_id = aws_subnet.Subnet-1.id
-   count = 2
+resource "aws_instance" "Myinstance" {
+  ami = "ami-0ded8326293d3201b"
+  instance_type = "t2.micro"
+  subnet_id = aws_subnet.Subnet-1.id
 
   tags = {
-    Name = "ExampleAppServerInstance"
+    Name="MyEC2Instant_by_Jenkins"
   }
+  
 }
-
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "state"
-    values = ["available"]
-  }
-}
-
-
-
-
-
